@@ -1,0 +1,35 @@
+{
+  "aid": 1,
+  "title": "The Weekend",
+  "artist": "Starboy",
+  "amount": 20,
+  "sold": 20,
+  "earnings": 32.6617,
+  "start": "2021-03-16 00:00 GMT-0700",
+  "end": "2021-03-18 00:00 GMT-0700",
+  "cover": "test-cases/images/the-weekend.png",
+  "demo": "test-cases/audios/Lake Of Dust.mp3",
+  "participants": [
+    {
+      "name": "Luke Kowalski",
+      "avatar": "images/default-avatar.png",
+      "bid": 2.33
+    }, {
+      "name": "Jocelyn Webber",
+      "avatar": "images/default-avatar.png",
+      "bid": 2.18
+    }, {
+      "name": "Sehyun Chung",
+      "avatar": "images/default-avatar.png",
+      "bid": 1.23
+    }, {
+      "name": "Ayaon Yadav",
+      "avatar": "images/default-avatar.png",
+      "bid": 1.09
+    }, {
+      "name": "Joe Mo",
+      "avatar": "images/default-avatar.png",
+      "bid": 1.08
+    }
+  ]
+}

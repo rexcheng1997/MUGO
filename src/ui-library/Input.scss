@@ -1,0 +1,21 @@
+.input-control {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    input.sm {
+        width: 4rem;
+    }
+    input.md {
+        width: 6rem;
+    }
+    input.lg {
+        width: 8rem;
+    }
+    input.xl {
+        width: 15rem;
+    }
+    label {
+        margin-left: 0.5rem;
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "mid": 1,
+      "title": "Maple Leaf Rag",
+      "artist": "Scott Joplin",
+      "plays": 3121,
+      "earnings": 110.1245,
+      "cover": "test-cases/images/maple-leaf-rag.jpg"
+    }, {
+      "mid": 2,
+      "title": "Bad Guy",
+      "artist": "Billie Eilish",
+      "plays": 1023,
+      "earnings": 60.6516,
+      "cover": "test-cases/images/bad-guy.jpg"
+    }, {
+      "mid": 3,
+      "title": "On the Run",
+      "artist": "Pink Floyd",
+      "plays": 912,
+      "earnings": 50.1234,
+      "cover": "test-cases/images/dark-side-of-the-moon.png"
+    }, {
+      "mid": 4,
+      "title": "The Wild Side Of Life",
+      "artist": "Hank Thompson",
+      "plays": 910,
+      "earnings": 45.9421,
+      "cover": "test-cases/images/the-wild-side-of-life.jpg"
+    }, {
+      "mid": 5,
+      "title": "Maybellene",
+      "artist": "Chuck Berry",
+      "plays": 823,
+      "earnings": 30.4211,
+      "cover": "test-cases/images/maybellene.jpg"
+    }
+  ]
+}

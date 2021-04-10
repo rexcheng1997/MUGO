@@ -1,0 +1,17 @@
+{
+  "uid": 2,
+  "name": "Jo Ramsey",
+  "email": "listener.test@berkeley.edu",
+  "avatar": "images/default-avatar.png",
+  "nmemonic": "should be encrypted this is a sample mnemonic",
+  "createdAt": "2021-03-25 12:23 GMT-0700",
+  "owns": [
+    {
+      "aid": 2,
+      "title": "OH JESUS CHRIS (Remix)",
+      "artist": "Ben Kessler",
+      "assetId": 100254,
+      "cover": "test-cases/images/oh-jesus-chris.png"
+    }
+  ]
+}

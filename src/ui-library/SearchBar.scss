@@ -1,0 +1,13 @@
+.search-bar {
+    margin-left: 2rem;
+    padding: 0.3rem 1rem;
+    background-color: white;
+    border-radius: 2rem;
+    transition: width 0.6s ease;
+    & > input {
+        margin-left: 0.5rem;
+        padding: 0.3rem 0.5rem;
+        border: none;
+        transition: width 0.6s ease;
+    }
+}

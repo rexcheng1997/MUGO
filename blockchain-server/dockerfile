@@ -1,0 +1,12 @@
+FROM python:3.8-alpine
+COPY . /app
+WORKDIR /app
+RUN apk add --no-cache --virtual .pynacl_deps build-base python3-dev libffi-dev
+RUN pip install -r r.txt
+RUN apk del .pynacl_deps
+ENV PYTHONUNBUFFERED=1
+ENV FLASK_ENV=development
+ENV FLASK_APP=server.py
+EXPOSE 5000
+ENTRYPOINT ["flask"]
+CMD ["run", "--host=0.0.0.0"]

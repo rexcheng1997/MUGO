@@ -1,0 +1,28 @@
+{
+  "mid": 3,
+  "title": "On the Run",
+  "artist": "Pink Floyd",
+  "plays": 912,
+  "earnings": 50.1234,
+  "cover": "test-cases/images/dark-side-of-the-moon.png",
+  "audio": "test-cases/audios/On the Run.mp3",
+  "listeners": [
+    {
+      "name": "Luke Kowalski",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Jocelyn Webber",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Sehyun Chung",
+      "avatar": "images/default-avatar.png",
+      "date": "02/28"
+    }, {
+      "name": "Ayaon Yadav",
+      "avatar": "images/default-avatar.png",
+      "date": "03/01"
+    }
+  ]
+}

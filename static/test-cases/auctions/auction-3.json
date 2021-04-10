@@ -1,0 +1,13 @@
+{
+  "aid": 3,
+  "title": "Queen",
+  "artist": "The Miracle",
+  "amount": 10,
+  "sold": null,
+  "earning": null,
+  "start": "2021-04-01 16:00 GMT-0700",
+  "end": "2021-04-02 2:00 GMT-0700",
+  "cover": "test-cases/images/queen.png",
+  "demo": "test-cases/audios/Queen.mp3",
+  "participants": []
+}

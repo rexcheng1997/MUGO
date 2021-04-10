@@ -1,0 +1,56 @@
+.mugo-loader {
+    position: relative;
+    display: grid;
+    align-items: stretch;
+    justify-items: stretch;
+    animation: rotate-loader 2.4s linear infinite;
+    &.sm {
+        grid-template-columns: 12px 12px;
+        grid-template-rows: 12px 12px;
+        grid-gap: 4px 4px;
+        .mugo-box {
+            border-radius: 2px;
+        }
+    }
+    &.md {
+        grid-template-columns: 25px 25px;
+        grid-template-rows: 25px 25px;
+        grid-gap: 8px 8px;
+        .mugo-box {
+            border-radius: 5px;
+        }
+    }
+    &.lg {
+        grid-template-columns: 40px 40px;
+        grid-template-rows: 40px 40px;
+        grid-gap: 12px 12px;
+        .mugo-box {
+            border-radius: 8px;
+        }
+    }
+    .mugo-box {
+        transform-origin: center;
+        animation: rotate-box 1.8s linear infinite;
+        &:nth-child(1) {
+            background-color: var(--primary);
+        }
+        &:nth-child(2) {
+            background-color: var(--contrast);
+        }
+        &:nth-child(3) {
+            background-color: var(--black);
+        }
+        &:nth-child(4) {
+            background-color: var(--secondary);
+        }
+    }
+}
+
+@keyframes rotate-loader {
+    from { transform: rotateZ(0); }
+    to { transform: rotateZ(360deg); }
+}
+@keyframes rotate-box {
+    from { transform: rotateZ(0); }
+    to { transform: rotateZ(-360deg); }
+}

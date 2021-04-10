@@ -1,0 +1,33 @@
+{
+  "uid": 1,
+  "name": "Ben Kessler",
+  "email": "user.test@berkeley.edu",
+  "title": "Amateur guitarist / songwriter",
+  "avatar": "images/default-avatar.png",
+  "nmemonic": "should be encrypted this is a sample mnemonic",
+  "createdAt": "2021-03-25 12:23 GMT-0700",
+  "auctions": [
+    {
+      "aid": 2,
+      "title": "OH JESUS CHRIS (Remix)",
+      "artist": "Ben Kessler",
+      "assetId": 100254,
+      "amount": 10,
+      "sold": null,
+      "earning": null,
+      "start": "2021-03-18 9:00 GMT-0700",
+      "end": "2021-03-30 18:00 GMT-0700",
+      "cover": "test-cases/images/oh-jesus-chris.png"
+    }
+  ],
+  "releases": [
+    {
+      "mid": 1,
+      "title": "OH JESUS CHRIS",
+      "artist": "Ben Kessler",
+      "plays": 3121,
+      "earnings": 110.1245,
+      "cover": "test-cases/images/maple-leaf-rag.jpg",
+    }
+  ]
+}

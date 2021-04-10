@@ -1,0 +1,21 @@
+.mbox {
+    position: relative;
+    padding: 2rem;
+    background-color: #fff;
+    &.half-rounded {
+        border-radius: 15px 15px 0 0;
+    }
+    &.rounded {
+        border-radius: 20px;
+    }
+    &.horizontal-shadow {
+        box-shadow:
+            -4px 0 4px rgba(37, 42, 52, 0.25),
+            4px 0 4px rgba(37, 42, 52, 0.25);
+    }
+    &.in-depth-shadow {
+        box-shadow:
+            -4px 2px 4px rgba(37, 42, 52, 0.25),
+            4px 2px 4px rgba(37, 42, 52, 0.25);
+    }
+}

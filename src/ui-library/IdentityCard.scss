@@ -1,0 +1,28 @@
+.identity-card {
+    width: 160px;
+    padding: 10px 15px;
+    color: var(--black);
+    background: radial-gradient(50% 81.37% at 50% 50%, #08e6e2 0%, #08d9d6 100%);
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px 2px rgba(37, 42, 52, 0.25);
+    transition: transform 0.4s ease;
+    &.active {
+        color: #fff;
+        background: radial-gradient(50% 81.37% at 50% 50%, #ff2e63 0%, #f21850 100%);
+        box-shadow: 0px 5px 15px 5px rgba(37, 42, 52, 0.25);
+        transform: scale(1.05);
+    }
+    h2 {
+        color: inherit;
+    }
+    .benefits {
+        margin: 0;
+        padding-left: 1rem;
+        color: inherit;
+        li {
+            margin-bottom: 0.4rem;
+            color: inherit;
+            line-height: 18px;
+        }
+    }
+}

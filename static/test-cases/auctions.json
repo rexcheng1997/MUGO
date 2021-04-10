@@ -1,0 +1,48 @@
+{
+  "upcoming": [
+    {
+      "aid": 2,
+      "title": "OH JESUS CHRIS (Remix)",
+      "artist": "Ben Kessler",
+      "amount": 10,
+      "sold": null,
+      "earning": null,
+      "start": "2021-03-18 9:00 GMT-0700",
+      "end": "2021-03-30 18:00 GMT-0700",
+      "cover": "test-cases/images/oh-jesus-chris.png"
+    }, {
+      "aid": 3,
+      "title": "Queen",
+      "artist": "The Miracle",
+      "amount": 10,
+      "sold": null,
+      "earning": null,
+      "start": "2021-04-01 16:00 GMT-0700",
+      "end": "2021-04-02 2:00 GMT-0700",
+      "cover": "test-cases/images/queen.png"
+    }, {
+      "aid": 4,
+      "title": "Blind",
+      "artist": "John Oholomar",
+      "amount": 15,
+      "sold": null,
+      "earning": null,
+      "start": "2021-04-10 8:00 GMT-0700",
+      "end": "2021-04-18 16:00 GMT-0700",
+      "cover": "test-cases/images/blind.png"
+    }
+  ],
+  "finished": [
+    {
+      "aid": 1,
+      "title": "The Weekend",
+      "artist": "Starboy",
+      "amount": 5,
+      "sold": 5,
+      "earnings": 7.19,
+      "start": "2021-03-16 00:00 GMT-0700",
+      "end": "2021-03-18 00:00 GMT-0700",
+      "cover": "test-cases/images/the-weekend.png"
+    }
+  ]
+}

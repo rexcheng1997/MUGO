@@ -1,0 +1,91 @@
+.mugo-callout {
+    position: sticky;
+    top: 0;
+    margin: 0 calc(-1 * var(--hp));
+    background-color: #fff;
+    z-index: 200;
+    & > * {
+        margin-left: var(--hp) !important;
+        margin-right: var(--hp) !important;
+    }
+    .mtitle {
+        margin-top: 1rem;
+        margin-bottom: 0;
+        padding-left: 2rem;
+        font-family: 'Permanent Marker', cursive;
+        font-size: 3rem;
+    }
+    .msubtitle {
+        position: relative;
+        top: -15px;
+        margin: 0;
+        font-size: 1rem;
+        font-style: italic;
+        text-align: right;
+        line-height: 20px;
+    }
+    hr {
+        margin-bottom: 3rem;
+    }
+}
+.mugo-callout::before {
+    content: '';
+    width: 100vw;
+    height: 2em;
+    display: block;
+    position: absolute;
+    top: -1em;
+    left: 0;
+    background-color: #fff;
+}
+
+.login-form, .signup-form {
+    label[for='submit-login'], label[for='submit-signup'] {
+        display: block;
+    }
+}
+.signup-form {
+    width: 100%;
+    padding-bottom: 1rem;
+    h2.header {
+        margin-bottom: 1rem;
+    }
+}
+
+.mugo-user {
+    margin-bottom: 2rem;
+    .avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+    }
+    .user-info {
+        min-width: 50vw;
+        h2 {
+            display: inline-block;
+            margin: 0;
+        }
+        .user-intro {
+            margin-top: 0.2rem;
+            margin-bottom: 0;
+            font-style: italic;
+        }
+        .join-date {
+            text-align: right;
+        }
+    }
+
+}
+
+section {
+    margin-top: 2rem;
+    & > p {
+        font-size: 1rem;
+    }
+    & > a {
+        color: inherit;
+        text-decoration: none;
+    }
+}
