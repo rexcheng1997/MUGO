@@ -5,7 +5,7 @@ from .Bid import BidSchema
 
 class Auction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    asset_id = db.Column(db.Integer, nullable=False)
+    assetId = db.Column(db.Integer, nullable=False)
     start = db.Column(db.DateTime, nullable=False)
     end = db.Column(db.DateTime, nullable=False)
     amount = db.Column(db.Integer, nullable=False)
@@ -22,9 +22,9 @@ class Auction(db.Model):
 
 class AuctionSchema(Schema):
     aid = fields.Int(attribute='id')
-    uid = fields.Int()
-    mid = fields.Int()
-    asset_id = fields.Int(required=True)
+    uid = fields.Int(required=True)
+    mid = fields.Int(required=True)
+    assetId = fields.Int(required=True)
     start = fields.DateTime(required=True)
     end = fields.DateTime(required=True)
     amount = fields.Int(required=True)

@@ -3,7 +3,7 @@ All endpoints, unless specified, expect json input and return json. The spec is 
 
 *Note: More endpoints will be added*
 
-## /create-wallet
+### /create-wallet
 Creates an Algo wallet
 - Method: **PUT**
 
@@ -13,7 +13,7 @@ Creates an Algo wallet
 	- mnemonic (str): The 25-word mnemonic of the created wallet
 
 
-## /check-wallet-balance
+### /check-wallet-balance
 Returns the balance of a wallet
 - Method: **POST**
 
@@ -28,7 +28,7 @@ Returns the balance of a wallet
 
 *Note: This method will be modified later to have an additional return value (earnings)*
 
-## /send-tips
+### /send-tips
 Sends a customized amount of tip to an artist/music producer
 - Method: **POST**
 

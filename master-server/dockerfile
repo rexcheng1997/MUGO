@@ -1,10 +1,17 @@
 FROM python:3.7-alpine
 COPY . /app
+COPY ../static /app
 WORKDIR /app
 RUN pip install flask
 ENV PYTHONUNBUFFERED=1
+ENV FLASK_SECRET_KEY=e6b4c3ecec2c5fce66893841c5925cf02246218a72ea993535db74980c68529a
 ENV FLASK_ENV=development
 ENV FLASK_APP=server.py
+ENV FLASK_STATIC_FOLDER=static
+ENV DB_SERVER_HOST=db-server
+ENV DB_SERVER_PORT=5001
+ENV BLOCKCHAIN_SERVER_HOST=blockchain-server
+ENV BLOCKCHAIN_SERVER_PORT=5000
 EXPOSE 3000
 ENTRYPOINT ["flask"]
-CMD ["run", "-h 0.0.0.0", "-p 3000"]
+CMD ["run", "--host=0.0.0.0", "--port=3000"]

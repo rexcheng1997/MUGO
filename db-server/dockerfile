@@ -9,7 +9,7 @@ ENV FLASK_ENV=development
 ENV FLASK_APP=server.py
 ENV DB_USERNAME=root
 ENV DB_PASSWORD=admin
-ENV DB_HOST=mugo-mysql-db
+ENV DB_HOST=mysql-db
 ENV DATABASE_NAME=mugo
 EXPOSE 5001
 ENTRYPOINT ["flask"]

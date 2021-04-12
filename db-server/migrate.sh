@@ -1,11 +1,12 @@
 #!/bin/sh
 
-CREATE_USER_ENDPOINT=localhost:5000/create-user
-CREATE_MEDIA_ENDPOINT=localhost:5000/create-media
-CREATE_AUCTION_ENDPOINT=localhost:5000/create-auction
-CREATE_BID_ENDPOINT=localhost:5000/create-bid
+CREATE_USER_ENDPOINT=localhost:5001/create-user
+CREATE_MEDIA_ENDPOINT=localhost:5001/create-media
+CREATE_AUCTION_ENDPOINT=localhost:5001/create-auction
+CREATE_BID_ENDPOINT=localhost:5001/create-bid
+CREATE_OWNERSHIP_ENDPOINT=localhost:5001/create-ownership
 
-curl -X PUT localhost:5000/init
+curl -X PUT localhost:5001/init
 
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Scott Joplin", "email":"scott@passed.com", "password":"my_pass", "mnemonic":"apple banana orange juice ham harbor execute", "identity":0, "title":"An admirable artist"}' $CREATE_USER_ENDPOINT
 
@@ -17,6 +18,8 @@ curl -X POST -H "Content-Type: application/json" -d '{"title":"Maple Leaf Rag", 
 
 curl -X POST -H "Content-Type: application/json" -d '{"title":"OH JESUS CHRIS (Remix)", "uid":2, "full_audio":"test-cases/audios/OH JESUS CHRIS (Remix).mp3", "demo_segment":"test-cases/audios/OH JESUS CHRIS (Remix).mp3", "cover":"test-cases/images/oh-jesus-chris.png", "dist_type":1}' $CREATE_MEDIA_ENDPOINT
 
-curl -X POST -H "Content-Type: application/json" -d '{"uid":2, "mid":2, "asset_id":100234, "start":"2021-04-08T09:00:00-07:00", "end":"2021-05-12T23:59:59-07:00", "amount":10}' $CREATE_AUCTION_ENDPOINT
+curl -X POST -H "Content-Type: application/json" -d '{"uid":2, "mid":2, "assetId":100234, "start":"2021-04-08T09:00:00-07:00", "end":"2021-05-12T23:59:59-07:00", "amount":10}' $CREATE_AUCTION_ENDPOINT
 
 curl -X POST -H "Content-Type: application/json" -d '{"bid":3.33, "uid":3, "aid":1}' $CREATE_BID_ENDPOINT
+
+curl -X POST -H "Content-Type: application/json" -d '{"uid":3, "aid":1, "mid":2}' $CREATE_OWNERSHIP_ENDPOINT

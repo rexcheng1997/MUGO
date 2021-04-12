@@ -20,6 +20,27 @@ export default function Signup({ url }) {
             setDisable(false);
             return;
         }
+        const data = { name, email, password };
+        data.identity = ({ 'artist': 0, 'listener': 1 })[identity];
+        if (title) data.title = title;
+        fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => response.json()).then(res => {
+            if (!res.status) {
+                const errors = [];
+                for (const field in res)
+                    errors.push(`Check your ${field}: ${res[field][0]}`);
+                setMessage(errors[0]);
+                setDisable(false);
+                return;
+            }
+            setMessage('Your account has been successfully created! Redirecting you to the login page...')
+            setTimeout(() => window.location.href = '#/account/login', 3e3);
+        });
     };
 
     const setIdentity = _identity => () => {

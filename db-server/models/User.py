@@ -34,7 +34,7 @@ class UserSchema(Schema):
     identity = fields.Int(required=True)
     title = fields.Str()
     subscription = fields.DateTime()
-    created_at = fields.DateTime()
+    createdAt = fields.DateTime(attribute='created_at')
     media = fields.List(fields.Nested(MediaSchema, exclude=('full_audio', 'demo_segment')))
     auctions = fields.List(fields.Nested(AuctionSchema, exclude=('media', 'bids')))
     owns = fields.List(fields.Nested(OwnershipSchema, exclude=('media',)))
