@@ -76,7 +76,15 @@
             text-align: right;
         }
     }
-
+    .vip-badge {
+        margin-left: 0.8rem;
+        padding: 3px 8px;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+        color: #fff;
+        background-color: var(--contrast);
+        border-radius: 10px;
+    }
 }
 
 section {

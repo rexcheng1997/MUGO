@@ -13,27 +13,33 @@ algod_client = algod.AlgodClient(
 @app.route('/create-wallet', methods=['PUT'])
 def create_wallet_endpoint():
     passphrase = create_wallet()
-    return jsonify({ 'mnemonic': passphrase }), 201
+    return jsonify(mnemonic=passphrase), 201
+
+
+@app.route('/get-public-address/<string:mnemonic>', methods=['GET'])
+def get_public_address_endpoint(mnemonic):
+    wallet = get_wallet_key_pairs(mnemonic)
+    return jsonify(address=wallet['public_key']), 200
 
 
 @app.route('/check-wallet-balance', methods=['POST'])
 def check_wallet_balance_endpoint():
     data = request.get_json()
-    if data == None:
+    if data is None:
         return '', 400
     if 'passphrase' not in data:
-        return jsonify({ 'message': 'Passphrase missing' }), 400
-        
+        return jsonify(message='Passphrase missing'), 400
+
     wallet = get_wallet_key_pairs(data['passphrase'])
     account_info = algod_client.account_info(wallet['public_key'])
     balance = account_info.get('amount')
-    return jsonify({ 'balance': balance / (10 ** 6) }), 200
+    return jsonify(balance=balance / (10 ** 6)), 200
 
 
 @app.route('/send-tips', methods=['POST'])
 def send_tips_endpoint():
     data = request.get_json()
-    if data == None:
+    if data is None:
         return '', 400
     msg = None
     if 'sender' not in data:
@@ -43,7 +49,9 @@ def send_tips_endpoint():
     elif 'amount' not in data:
         msg = 'Amount missing'
     if msg != None:
-        return jsonify({ 'message': msg }), 400
+        return jsonify(message=msg), 400
+    if data['sender'] == data['receiver']:
+        return '', 200
 
     sender_wallet = get_wallet_key_pairs(data['sender'])
     receiver_wallet = get_wallet_key_pairs(data['receiver'])
@@ -51,9 +59,9 @@ def send_tips_endpoint():
     sender_balance = sender_account_info.get('amount')
 
     if sender_balance < data['amount'] * (10 ** 6) + 1000: # 1000 is the gas fee
-        return jsonify({ 'message': 'You do not have {} algos in your balance!'.format(data['amount']) }), 406
+        return jsonify(message='You do not have {} algos in your balance!'.format(data['amount'])), 406
 
     txn = one_way_transaction(algod_client, sender_wallet, receiver_wallet['public_key'], int(data['amount'] * (10 ** 6)), data.get('note', ''))
     if not txn['status']:
-        return jsonify({ 'message': txn['info'] }), 500
+        return jsonify(message=txn['info']), 500
     return txn['info'], 200

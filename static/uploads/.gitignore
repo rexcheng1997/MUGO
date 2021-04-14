@@ -1,0 +1,5 @@
+# Ingore everything in the local upload folder
+*
+
+# except this file itself
+!.gitignore

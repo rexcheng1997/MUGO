@@ -14,14 +14,31 @@ export default function Login({ url, onLogin }) {
         setDisable(true);
         const email = e.target.elements['email'].value,
             password = e.target.elements['password'].value;
-        fetch(`test-cases/${email}$${password}.json`, { method: 'GET' })
-            .then(response => response.json()).then(res => {
-                sessionStorage.setItem('musr', JSON.stringify(res));
-                onLogin(res);
-            }).catch(err => {
-                setMessage('User does not exist or password is not correct!');
+        // fetch(`test-cases/${email}$${password}.json`, { method: 'GET' })
+        //     .then(response => response.json()).then(res => {
+        //         sessionStorage.setItem('musr', JSON.stringify(res));
+        //         onLogin(res);
+        //     }).catch(err => {
+        //         setMessage('User does not exist or password is not correct!');
+        //         setDisable(false);
+        //     });
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        }).then(response => response.json()).then(res => {
+            if (res.hasOwnProperty('message')) {
+                setMessage(res.message);
                 setDisable(false);
-            });
+                return;
+            }
+            onLogin(res);
+        }).catch(err => {
+            setMessage('User does not exist or password is not correct!');
+            setDisable(false);
+        });
     };
 
     return (<>

@@ -1,5 +1,6 @@
 from models.config import db
 from marshmallow import Schema, fields
+from .Listener import ListenerSchema
 
 class Media(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -12,12 +13,14 @@ class Media(db.Model):
     earnings = db.Column(db.Float, nullable=False, default=0)
     uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    listeners = db.relationship('Listener', backref=db.backref('media', lazy='select'), lazy='select')
+
     def __repr__(self):
         return '<Media {self.id} (title={self.title!r}\ttype={self.dist_type})>'.format(self=self)
 
 class MediaSchema(Schema):
     mid = fields.Int(attribute='id')
-    uid = fields.Int()
+    uid = fields.Int(required=True)
     title = fields.Str(required=True)
     full_audio = fields.Str(required=True)
     demo_segment = fields.Str(required=True)
@@ -25,3 +28,4 @@ class MediaSchema(Schema):
     dist_type = fields.Bool(required=True)
     plays = fields.Int()
     earnings = fields.Float()
+    listeners = fields.List(fields.Nested(ListenerSchema, only=('uid', 'date')))

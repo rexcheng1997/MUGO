@@ -10,7 +10,7 @@ export default function StatsCard({ color, title, num, increase }) {
                     <span className='big'>{num}</span>
                     {increase > 0 && <>
                         <span className='up-arrow'>&uarr;</span>
-                        <span>{parseInt(increase)}+</span>
+                        <span>{parseInt(increase * 10) / 10}+</span>
                     </>}
                     <span className='unit'>Algos</span>
                 </div>

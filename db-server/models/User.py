@@ -15,7 +15,7 @@ class User(db.Model):
     identity = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(100))
     subscription = db.Column(db.DateTime)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now().astimezone)
+    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now().astimezone)
 
     media = db.relationship('Media', backref=db.backref('user', lazy='joined'), lazy='select')
     auctions = db.relationship('Auction', backref=db.backref('user', lazy='joined'), lazy='select')
@@ -34,7 +34,7 @@ class UserSchema(Schema):
     identity = fields.Int(required=True)
     title = fields.Str()
     subscription = fields.DateTime()
-    createdAt = fields.DateTime(attribute='created_at')
+    createdAt = fields.DateTime()
     media = fields.List(fields.Nested(MediaSchema, exclude=('full_audio', 'demo_segment')))
     auctions = fields.List(fields.Nested(AuctionSchema, exclude=('media', 'bids')))
     owns = fields.List(fields.Nested(OwnershipSchema, exclude=('media',)))

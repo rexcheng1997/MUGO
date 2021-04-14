@@ -8,6 +8,7 @@ import TextField from 'ui/TextField';
 import Label from 'ui/Label';
 import Button from 'ui/Button';
 import Toast from 'ui/Toast';
+import Loader from 'ui/Loader';
 import PlusIcon from 'svg/math-plus.svg';
 import PenIcon from 'svg/pen.svg';
 import CheckIcon from 'svg/check.svg';
@@ -21,7 +22,8 @@ export default function Upload() {
     const [audioName, setAudioName] = useState('');
     const [timestamp, setTimestamp] = useState({ start: 0, end: 0 });
     const [coverUrl, setCoverUrl] = useState('');
-    const [warning, setWarning] = useState('');
+    const [message, setMessage] = useState('');
+    const [showLoader, setShowLoader] = useState(false);
     const audio = useRef(null);
     const cover = useRef(null);
 
@@ -46,63 +48,87 @@ export default function Upload() {
         const title = e.target.elements['title'].value,
               agreed = e.target.elements['agreement'].checked;
         if (!agreed) {
-            setWarning('You must agree to the terms of service and terms of privacy!');
+            setMessage('You must agree to the terms of service and terms of privacy!');
             return;
         }
         if (title.length === 0) {
-            setWarning('Please enter a title!');
+            setMessage('Please enter a title!');
             return;
         }
         if (audio.current === null) {
-            setWarning('Please upload an audio for your music!');
+            setMessage('Please upload an audio for your music!');
             return;
         }
         if (cover.current === null) {
-            setWarning('Please upload a cover for your music!');
+            setMessage('Please upload a cover for your music!');
             return;
         }
-        if (dtype === DTYPE['Release']) {
-
-        }
-        else if (dtype === DTYPE['Auction (NFT)']) {
+        if (dtype === DTYPE['Auction (NFT)']) {
             const [startDate, endDate, startTime, endTime, amount, bid] = ['start-date', 'end-date', 'start-time', 'end-time', 'amount', 'bid'].map(field => e.target.elements[field].value);
             if (startDate.length === 0) {
-                setWarning('Please provide the start date for your auction!');
+                setMessage('Please provide the start date for your auction!');
                 return;
             }
             if (endDate.length === 0) {
-                setWarning('Please provide the end date for your auction!');
+                setMessage('Please provide the end date for your auction!');
                 return;
             }
             if (startTime.length === 0) {
-                setWarning('Please specify the start time for your auction!');
+                setMessage('Please specify the start time for your auction!');
                 return;
             } else if (startTime.match(/^\d{2}:\d{2}$/) === null) {
-                setWarning('The start time you enter must follow the format (hh:mm), e.g. 08:30');
+                setMessage('The start time you enter must follow the format (hh:mm), e.g. 08:30');
                 return;
             }
             if (endTime.length === 0) {
-                setWarning('Please specify the end time for your auction!');
+                setMessage('Please specify the end time for your auction!');
                 return;
             } else if (endTime.match(/^\d{2}:\d{2}$/) === null) {
-                setWarning('The end time you enter must follow the format (hh:mm), e.g. 16:00');
+                setMessage('The end time you enter must follow the format (hh:mm), e.g. 16:00');
                 return;
             }
             if (amount.length === 0) {
-                setWarning('Please enter the number of distributions (NFTs)!');
+                setMessage('Please enter the number of distributions (NFTs)!');
                 return;
             } else if (amount.match(/^\d+$/) === null) {
-                setWarning('The number of distributions (NFTs) must be an integer!');
+                setMessage('The number of distributions (NFTs) must be an integer!');
                 return;
             }
             if (bid.length === 0) {
-                setWarning('Please enter the starting bid in Algos for your NFTs!');
+                setMessage('Please enter the starting bid in Algos for your NFTs!');
                 return;
             } else if (bid.match(/^\d+(?:\.\d+)?$/) === null) {
-                setWarning('The starting bid must be a number!');
+                setMessage('The starting bid must be a number!');
                 return;
             }
         }
+        setShowLoader(true);
+        setMessage('Uploading...');
+        const formData = new FormData();
+        formData.append('cover', cover.current);
+        formData.append('audio', audio.current);
+        formData.append('title', title);
+        formData.append('dtype', dtype);
+        formData.append('start', timestamp.start);
+        formData.append('end', timestamp.end);
+        fetch('/upload', {
+            method: 'PUT',
+            body: formData
+        }).then(response => response.json()).then(res => {
+            if (dtype === DTYPE['Release'])
+                return Promise.resolve(res);
+            // TODO: send POST request to create auction
+            return Promise.resolve(res);
+        }).then(res => {
+            if (!res.status) throw new Error(res.message);
+            setShowLoader(false);
+            setMessage('Your music has been successfully uploaded to our platform!');
+            setTimeout(() => window.location.href = '/', 2e3);
+        }).catch(err => {
+            console.error(err);
+            setShowLoader(false);
+            setMessage('Uploading failed. Please refresh the page and try again!');
+        });
     };
 
     return (
@@ -166,13 +192,14 @@ export default function Upload() {
                             <Button color='success' LeftIcon={<CheckIcon width='20' height='20' viewBox='0 0 24 24'/>}>Submit</Button>
                             <input type='submit' id='msubmit'/>
                         </label>
-                        <Button color='danger' LeftIcon={<CloseIcon width='20' height='20' viewBox='0 0 24 24'/>} onClick={() => location.reload()}>Cancel</Button>
+                        <Button color='danger' LeftIcon={<CloseIcon width='20' height='20' viewBox='0 0 24 24'/>} onClick={() => window.location.reload()}>Cancel</Button>
                     </div>
                 </div>
             </form>
-            {warning.length > 0 && <Toast onClose={() => setWarning('')}>
-                <div className='center'>
-                    <p style={{ display: 'inline-block' }}>{warning}</p>
+            {message.length > 0 && <Toast onClose={() => setMessage('')}>
+                <div className='flex-col align-center'>
+                    {showLoader && <Loader size='sm' style={{ marginBottom: '0.5rem' }}/>}
+                    <p style={{ display: 'inline-block' }}>{message}</p>
                 </div>
             </Toast>}
         </Container>

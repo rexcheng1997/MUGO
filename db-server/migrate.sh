@@ -10,7 +10,7 @@ curl -X PUT localhost:5001/init
 
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Scott Joplin", "email":"scott@passed.com", "password":"my_pass", "mnemonic":"apple banana orange juice ham harbor execute", "identity":0, "title":"An admirable artist"}' $CREATE_USER_ENDPOINT
 
-curl -X POST -H "Content-Type: application/json" -d '{"name":"Ben Kessler", "email":"ben.k@studio.eu", "password":"secret-pass", "mnemonic":"should be encrypted this is a sample mnemonic for testing purpose", "identity":0, "title":"Amateur guitarist / songwriter"}' $CREATE_USER_ENDPOINT
+curl -X POST -H "Content-Type: application/json" -d '{"name":"Ben Kessler", "email":"ben.k@studio.eu", "password":"secret-pass", "mnemonic":"doll aware crisp effort nothing balance unlock quarter cushion spread spell palace clap embrace manage typical treat slice embody moment guitar member always able perfect", "identity":0, "title":"Amateur guitarist / songwriter"}' $CREATE_USER_ENDPOINT
 
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Jo Ramsey", "email":"jo.ram@berkeley.edu", "password":"password", "mnemonic":"should be encrypted this is a sample mnemonic for testing purpose", "identity":1}' $CREATE_USER_ENDPOINT
 
@@ -18,7 +18,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"title":"Maple Leaf Rag", 
 
 curl -X POST -H "Content-Type: application/json" -d '{"title":"OH JESUS CHRIS (Remix)", "uid":2, "full_audio":"test-cases/audios/OH JESUS CHRIS (Remix).mp3", "demo_segment":"test-cases/audios/OH JESUS CHRIS (Remix).mp3", "cover":"test-cases/images/oh-jesus-chris.png", "dist_type":1}' $CREATE_MEDIA_ENDPOINT
 
-curl -X POST -H "Content-Type: application/json" -d '{"uid":2, "mid":2, "assetId":100234, "start":"2021-04-08T09:00:00-07:00", "end":"2021-05-12T23:59:59-07:00", "amount":10}' $CREATE_AUCTION_ENDPOINT
+curl -X POST -H "Content-Type: application/json" -d '{"uid":2, "mid":2, "assetId":100234, "start":"2021-04-08T09:00:00-07:00", "end":"2021-05-12T23:59:59-07:00", "amount":10, "minBid":1}' $CREATE_AUCTION_ENDPOINT
 
 curl -X POST -H "Content-Type: application/json" -d '{"bid":3.33, "uid":3, "aid":1}' $CREATE_BID_ENDPOINT
 

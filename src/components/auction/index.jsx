@@ -8,19 +8,25 @@ import Entry from 'ui/Entry';
 import Input from 'ui/Input';
 import Button from 'ui/Button';
 import Timer from 'ui/Timer';
+import Toast from 'ui/Toast';
 import ArrowRightIcon from 'svg/arrow-right.svg';
 
 export default function AuctionPage(props) {
-    const { aid, start, end, participants } = props.data;
+    const { aid, start, end, minBid, participants } = props.data;
     const now = new Date();
     const [upcoming, setUpcoming] = useState(now < new Date(start));
     const [ongoing, setOngoing] = useState(now >= new Date(start) && now < new Date(end));
     const [finished, setFinished] = useState(now >= new Date(end));
+    const [message, setMessage] = useState('');
     const inputRef = useRef();
 
     const handleBidRequest = () => {
         const value = parseFloat(inputRef.current.value);
         if (isNaN(value) || value === 0) return;
+        if (value < minBid) {
+            setMessage(`The artist has set a minimum bid at ${minBid} Algos. Please enter an amount greater than or equal to the minimum bid.`);
+            return;
+        }
         console.log(value);
     };
 
@@ -58,6 +64,9 @@ export default function AuctionPage(props) {
                     {participants.map((p, i) => <Entry key={i + 1} rank={i + 1} data={p}/>)}
                 </div>
             </Box>}
+            {message.length > 0 && <Toast onClose={() => setMessage('')}>
+                <p>{message}</p>
+            </Toast>}
         </div>
     );
 };

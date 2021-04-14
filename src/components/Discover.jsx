@@ -18,23 +18,39 @@ export default function Discover(props) {
 
     useEffect(() => {
         setTop(document.querySelector('nav').offsetHeight);
-        fetch('test-cases/songs.json', { method: 'GET' })
-            .then(response => response.json()).then(res => {
-                setReleases(res.data);
-            });
+        // fetch('test-cases/songs.json', { method: 'GET' })
+        //     .then(response => response.json()).then(res => {
+        //         setReleases(res.data);
+        //     });
         fetch('test-cases/auctions.json', { method: 'GET' })
             .then(response => response.json()).then(res => {
                 setAuctions(res);
             });
+        fetch('/releases', { method: 'GET' })
+            .then(response => response.json()).then(res => {
+                setReleases(res.data);
+            });
+        // fetch('/auctions', { method: 'GET' })
+        //     .then(response => response.json()).then(res => {
+        //         setAuctions(res);
+        //     });
     }, []);
 
     const handleSongClick = mid => () => {
         props.trigger.current = setShowSongGallery;
-        fetch(`test-cases/songs/song-${mid}.json`, { method: 'GET' })
+        // fetch(`test-cases/songs/song-${mid}.json`, { method: 'GET' })
+        //     .then(response => response.json()).then(res => {
+        //         setCurrentSong(res);
+        //         setShowGoBack(true);
+        //         setShowSongGallery(false);
+        //     });
+        fetch(`/song/${mid}`, { method: 'GET' })
             .then(response => response.json()).then(res => {
                 setCurrentSong(res);
                 setShowGoBack(true);
                 setShowSongGallery(false);
+            }).catch(err => {
+                console.error(err);
             });
     };
 
