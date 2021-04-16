@@ -181,6 +181,7 @@ def get_mnemonic_endpoint():
     if user is None:
         return jsonify(message=f'User {uid} does not exist!'), 404
 
+    # decrypt the mnemonic
     return jsonify(mnemonic=user.mnemonic), 200
 
 
@@ -332,11 +333,67 @@ def retrieve_all_ownerships():
     return jsonify(*map(schema.dump, ownerships)), 200
 
 
+@app.route('/auctions', methods=['GET'])
+def get_all_auctions_endpoint():
+    ts = datetime.now()
+    schema = AuctionSchema(exclude=('assetId', 'minBid', 'media', 'bids'))
+    upcoming = Auction.query.filter(Auction.end > ts).order_by(Auction.end).all()
+    upcoming = schema.dump(upcoming, many=True)
+    finished = Auction.query.filter(Auction.end <= ts).order_by(Auction.start).all()
+    finished = schema.dump(finished, many=True)
+
+    for auction in upcoming:
+        media = Media.query.get(auction['mid'])
+        auction['title'] = media.title
+        auction['cover'] = media.cover
+        auction['artist'] = User.query.get(auction['uid']).name
+        del auction['uid']
+    for auction in finished:
+        media = Media.query.get(auction['mid'])
+        auction['title'] = media.title
+        auction['cover'] = media.cover
+        auction['artist'] = User.query.get(auction['uid']).name
+        del auction['uid']
+
+    return jsonify(upcoming=upcoming, finished=finished), 200
+
+
+@app.route('/auction/<int:aid>/<int:uid>', methods=['GET'])
+def get_auction_endpoint(aid, uid):
+    auction = Auction.query.get(aid)
+    if auction is None:
+        return '', 400
+
+    auction = AuctionSchema(only=('aid', 'uid', 'assetId', 'start', 'end', 'amount', 'minBid', 'sold', 'earnings', 'media.title', 'media.full_audio', 'media.demo_segment', 'media.cover')).dump(auction)
+
+    auction['artist'] = User.query.get(auction['uid']).name
+    auction['title'] = auction['media']['title']
+    auction['cover'] = auction['media']['cover']
+    if Ownership.query.filter_by(uid=uid, aid=aid).first() is None:
+        auction['demo'] = auction['media']['demo_segment']
+    else:
+        auction['demo'] = auction['media']['full_audio']
+    del auction['uid']
+    del auction['media']
+
+    participants = Bid.query.filter_by(aid=aid).order_by(Bid.bid.desc()).all()
+    participants = BidSchema(only=('uid', 'bid')).dump(participants, many=True)
+    for participant in participants:
+        user = User.query.get(participant['uid'])
+        participant['name'] = user.name
+        participant['avatar'] = user.avatar
+        del participant['uid']
+    auction['participants'] = participants
+
+    return jsonify(auction), 200
+
+
 @app.route('/create-auction', methods=['POST'])
 def create_auction_endpoint():
     data = request.get_json()
     if data is None:
         return '', 400
+
     message = AuctionSchema().validate(data)
     if len(message) > 0:
         return jsonify(message), 400
@@ -346,6 +403,29 @@ def create_auction_endpoint():
     db.session.commit()
     schema = AuctionSchema()
     return jsonify(schema.dump(auction)), 201
+
+
+@app.route('/update-auction', methods=['POST'])
+def update_auction_endpoint():
+    data = request.get_json()
+    if data is None:
+        return '', 400
+    if 'aid' not in data:
+        return jsonify(message='Missing aid in the request'), 400
+
+    auction = Auction.query.get(data['aid'])
+    if auction is None:
+        return '', 404
+
+    if 'assetId' in data:
+        auction.assetId = data['assetId']
+    if 'sold' in data:
+        auction.sold = data['sold']
+    if 'earnings' in data:
+        auction.earnings = data['earnings']
+    db.session.commit()
+    schema = AuctionSchema(exclude=('media',))
+    return jsonify(schema.dump(auction)), 200
 
 
 @app.route('/create-bid', methods=['POST'])

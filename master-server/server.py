@@ -20,7 +20,6 @@ def signup_endpoint():
     data = request.get_json()
     if data is None:
         return '', 400
-    # TODO: password hash etc.
     r = requests.put(f'http://{BLOCKCHAIN_SERVER}/create-wallet')
     data['mnemonic'] = r.json()['mnemonic']
     r = requests.post(f'http://{DB_SERVER}/create-user', json=data)
@@ -131,6 +130,21 @@ def get_song_endpoint(mid):
     return jsonify(song), 200
 
 
+@app.route('/auctions', methods=['GET'])
+def get_auctions_endpoint():
+    r = requests.get(f'http://{DB_SERVER}/auctions')
+    return jsonify(r.json()), 200
+
+
+@app.route('/auction/<int:aid>', methods=['GET'])
+def get_auction_endpoint(aid):
+    r = requests.get(f'http://{DB_SERVER}/auction/{aid}/{session["uid"] if "uid" in session else 0}')
+    if r.status_code == 400:
+        return '', 400
+
+    return jsonify(r.json()), 200
+
+
 @app.route('/send-tips', methods=['POST'])
 def send_tips_endpoint():
     if 'uid' not in session:
@@ -227,4 +241,47 @@ def upload_endpoint():
     if r.status_code == 400:
         return jsonify(r.json()) if len(r.text) > 0 else '', 400
 
-    return jsonify(status=True, mid=r.json()['mid']), 200
+    return jsonify(status=True, mid=r.json()['mid'], message='Your music has been successfully uploaded to our platform!', redirect='/'), 200
+
+
+@app.route('/create-auction', methods=['POST'])
+def create_auction_endpoint():
+    if 'uid' not in session:
+        return '', 401
+
+    data = request.get_json()
+    if data is None or 'title' not in data:
+        return '', 400
+    asset_name = secure_filename(data['title'])
+    del data['title']
+    data['uid'] = session['uid']
+
+    r = requests.post(f'http://{DB_SERVER}/create-auction', json=data)
+    if r.status_code == 400:
+        return jsonify(r.json()), 400
+    aid = r.json()['aid']
+
+    r = requests.get(f'http://{DB_SERVER}/get-mnemonic?uid={session["uid"]}')
+    if r.status_code == 400:
+        return '', 400
+    elif r.status_code == 404:
+        return jsonify(r.json()), 404
+    mnemonic = r.json()['mnemonic']
+
+    r = requests.post(f'http://{BLOCKCHAIN_SERVER}/create-asset', json={
+        'passphrase': mnemonic, 'asset_name': asset_name,
+        'auction_page': f'/view/auction/{aid}', 'amount': data['amount'],
+        'note': '<Auction {}> by <User {}>'.format(aid, session['uid'])
+    })
+    if r.status_code == 400 or r.status_code == 500:
+        return jsonify(r.json()), r.status_code
+    print(r.json())
+    asset_id = r.json()['asset_id']
+
+    r = requests.post(f'http://{DB_SERVER}/update-auction', json={
+        'aid': aid, 'assetId': asset_id
+    })
+    if r.status_code != 200:
+        return jsonify(r.json()) if len(r.text()) > 0 else '', r.status_code
+
+    return jsonify(status=True, message='Your auction has been successfully created!', redirect='#/auction'), 201

@@ -1,10 +1,9 @@
 FROM python:3.7-alpine
 COPY . /app
-COPY ../static /app
-RUN mkdir -p /app/static/uploads
+ADD static.tar.gz /app
 WORKDIR /app
 RUN apk add --no-cache ffmpeg
-RUN pip install flask ffmpeg-python
+RUN pip install -r r.txt
 ENV PYTHONUNBUFFERED=1
 ENV FLASK_SECRET_KEY=e6b4c3ecec2c5fce66893841c5925cf02246218a72ea993535db74980c68529a
 ENV FLASK_ENV=development

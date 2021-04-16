@@ -10,9 +10,9 @@ curl -X PUT localhost:5001/init
 
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Scott Joplin", "email":"scott@passed.com", "password":"my_pass", "mnemonic":"apple banana orange juice ham harbor execute", "identity":0, "title":"An admirable artist"}' $CREATE_USER_ENDPOINT
 
-curl -X POST -H "Content-Type: application/json" -d '{"name":"Ben Kessler", "email":"ben.k@studio.eu", "password":"secret-pass", "mnemonic":"doll aware crisp effort nothing balance unlock quarter cushion spread spell palace clap embrace manage typical treat slice embody moment guitar member always able perfect", "identity":0, "title":"Amateur guitarist / songwriter"}' $CREATE_USER_ENDPOINT
+curl -X POST -H "Content-Type: application/json" -d '{"name":"Ben Kessler", "email":"ben.k@studio.eu", "password":"secret-pass", "mnemonic":"ski clarify dawn leopard grab amazing output fashion coin delay zero virtual demand pattern glance grocery critic mandate fever country cushion used reject able bone", "identity":0, "title":"Amateur guitarist / songwriter"}' $CREATE_USER_ENDPOINT
 
-curl -X POST -H "Content-Type: application/json" -d '{"name":"Jo Ramsey", "email":"jo.ram@berkeley.edu", "password":"password", "mnemonic":"should be encrypted this is a sample mnemonic for testing purpose", "identity":1}' $CREATE_USER_ENDPOINT
+curl -X POST -H "Content-Type: application/json" -d '{"name":"Jo Ramsey", "email":"jo.ram@berkeley.edu", "password":"password", "mnemonic":"ocean cup genius super exclude leaf attract wish trim gauge mutual twenty oyster spike mean prosper state adjust injury jeans fix payment release absorb host", "identity":1}' $CREATE_USER_ENDPOINT
 
 curl -X POST -H "Content-Type: application/json" -d '{"title":"Maple Leaf Rag", "uid":1, "full_audio":"test-cases/audios/Maple Leaf Rag.mp3", "demo_segment":"test-cases/audios/Maple Leaf Rag.mp3", "cover":"test-cases/images/maple-leaf-rag.jpg", "dist_type":0, "plays":3121, "earnings":110.1245}' $CREATE_MEDIA_ENDPOINT
 

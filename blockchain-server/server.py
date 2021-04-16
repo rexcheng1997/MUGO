@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from algosdk.v2client import algod
 from mugo_algorand.wallet import *
-from mugo_algorand.transaction import one_way_transaction
+from mugo_algorand.transaction import *
 
 app = Flask(__name__)
 algod_client = algod.AlgodClient(
@@ -16,9 +16,9 @@ def create_wallet_endpoint():
     return jsonify(mnemonic=passphrase), 201
 
 
-@app.route('/get-public-address/<string:mnemonic>', methods=['GET'])
-def get_public_address_endpoint(mnemonic):
-    wallet = get_wallet_key_pairs(mnemonic)
+@app.route('/get-public-address/<string:passphrase>', methods=['GET'])
+def get_public_address_endpoint(passphrase):
+    wallet = get_wallet_key_pairs(passphrase)
     return jsonify(address=wallet['public_key']), 200
 
 
@@ -34,6 +34,33 @@ def check_wallet_balance_endpoint():
     account_info = algod_client.account_info(wallet['public_key'])
     balance = account_info.get('amount')
     return jsonify(balance=balance / (10 ** 6)), 200
+
+
+@app.route('/create-asset', methods=['POST'])
+def create_asset_endpoint():
+    data = request.get_json()
+    if data is None:
+        return '', 400
+    msg = ''
+    if 'passphrase' not in data:
+        msg = 'Passphrase missing'
+    elif 'asset_name' not in data:
+        msg = 'Asset name missing'
+    elif 'auction_page' not in data:
+        msg = 'Auction page url missing'
+    elif 'amount' not in data:
+        msg = 'Amount missing'
+    elif 'note' not in data:
+        msg = 'Note missing'
+    if len(msg) > 0:
+        return jsonify(message=msg), 400
+
+    wallet = get_wallet_key_pairs(data['passphrase'])
+    txn = create_asset(algod_client, wallet, data['asset_name'], data['auction_page'], data['amount'], data['note'])
+    if not txn['status']:
+        return jsonify(message=txn['info']), 500
+    del txn['status']
+    return jsonify(txn), 201
 
 
 @app.route('/send-tips', methods=['POST'])

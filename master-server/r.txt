@@ -1,0 +1,3 @@
+flask
+requests
+ffmpeg-python
