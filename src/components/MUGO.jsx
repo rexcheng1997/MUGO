@@ -110,7 +110,12 @@ function ViewAuction(props) {
     const [auction, setAuction] = useState();
 
     useEffect(() => {
-        fetch(`test-cases/auctions/auction-${aid}.json`, { method: 'GET' })
+        // fetch(`test-cases/auctions/auction-${aid}.json`, { method: 'GET' })
+        //     .then(response => response.json()).then(res => {
+        //         setAuction(res);
+        //         props.setCurrentSong({ title: res.title, audio: res.demo });
+        //     });
+        fetch(`/auction/${aid}`, { method: 'GET' })
             .then(response => response.json()).then(res => {
                 setAuction(res);
                 props.setCurrentSong({ title: res.title, audio: res.demo });
@@ -129,7 +134,12 @@ function ViewSong(props) {
     const [song, setSong] = useState();
 
     useEffect(() => {
-        fetch(`test-cases/songs/song-${mid}.json`, { method: 'GET' })
+        // fetch(`test-cases/songs/song-${mid}.json`, { method: 'GET' })
+        //     .then(response => response.json()).then(res => {
+        //         setSong(res);
+        //         props.setCurrentSong(res);
+        //     });
+        fetch(`/song/${mid}`, { method: 'GET' })
             .then(response => response.json()).then(res => {
                 setSong(res);
                 props.setCurrentSong(res);

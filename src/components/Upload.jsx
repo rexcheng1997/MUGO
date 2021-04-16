@@ -76,14 +76,14 @@ export default function Upload() {
             if (startTime.length === 0) {
                 setMessage('Please specify the start time for your auction!');
                 return;
-            } else if (startTime.match(/^\d{2}:\d{2}$/) === null) {
+            } else if (startTime.match(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/) === null) {
                 setMessage('The start time you enter must follow the format (hh:mm), e.g. 08:30');
                 return;
             }
             if (endTime.length === 0) {
                 setMessage('Please specify the end time for your auction!');
                 return;
-            } else if (endTime.match(/^\d{2}:\d{2}$/) === null) {
+            } else if (endTime.match(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/) === null) {
                 setMessage('The end time you enter must follow the format (hh:mm), e.g. 16:00');
                 return;
             }
@@ -117,13 +117,26 @@ export default function Upload() {
         }).then(response => response.json()).then(res => {
             if (dtype === DTYPE['Release'])
                 return Promise.resolve(res);
-            // TODO: send POST request to create auction
-            return Promise.resolve(res);
+            const [startDate, endDate, startTime, endTime, amount, bid] = ['start-date', 'end-date', 'start-time', 'end-time', 'amount', 'bid'].map(field => e.target.elements[field].value);
+            return fetch('/create-auction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    mid: res.mid,
+                    title: title,
+                    start: `${startDate} ${startTime}:00`,
+                    end: `${endDate} ${endTime}:00`,
+                    amount: parseInt(amount),
+                    minBid: parseFloat(bid)
+                })
+            }).then(response => response.json());
         }).then(res => {
             if (!res.status) throw new Error(res.message);
             setShowLoader(false);
-            setMessage('Your music has been successfully uploaded to our platform!');
-            setTimeout(() => window.location.href = '/', 2e3);
+            setMessage(res.message);
+            setTimeout(() => window.location.href = res.redirect, 2e3);
         }).catch(err => {
             console.error(err);
             setShowLoader(false);
@@ -174,7 +187,7 @@ export default function Upload() {
                     </div>
                     <div className='flex-row align-center'>
                         <Input size='md' type='number' name='amount' label='NFTs' placeholder='e.g. 10' style={{ marginRight: '2rem' }}/>
-                        <Input size='lg' type='number' name='bid' label='Algos' placeholder='Starting Bid'/>
+                        <Input size='lg' type='text' name='bid' label='Algos' placeholder='Starting Bid'/>
                     </div>
                 </div>}
                 <div className='group' style={{ marginTop: '2rem' }}>

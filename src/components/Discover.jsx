@@ -22,18 +22,18 @@ export default function Discover(props) {
         //     .then(response => response.json()).then(res => {
         //         setReleases(res.data);
         //     });
-        fetch('test-cases/auctions.json', { method: 'GET' })
-            .then(response => response.json()).then(res => {
-                setAuctions(res);
-            });
+        // fetch('test-cases/auctions.json', { method: 'GET' })
+        //     .then(response => response.json()).then(res => {
+        //         setAuctions(res);
+        //     });
         fetch('/releases', { method: 'GET' })
             .then(response => response.json()).then(res => {
                 setReleases(res.data);
             });
-        // fetch('/auctions', { method: 'GET' })
-        //     .then(response => response.json()).then(res => {
-        //         setAuctions(res);
-        //     });
+        fetch('/auctions', { method: 'GET' })
+            .then(response => response.json()).then(res => {
+                setAuctions(res);
+            });
     }, []);
 
     const handleSongClick = mid => () => {
@@ -56,7 +56,14 @@ export default function Discover(props) {
 
     const handleAuctionClick = aid => () => {
         props.trigger.current = setShowAuctionGallery;
-        fetch(`test-cases/auctions/auction-${aid}.json`, { method: 'GET' })
+        // fetch(`test-cases/auctions/auction-${aid}.json`, { method: 'GET' })
+        //     .then(response => response.json()).then(res => {
+        //         setCurrentAuction(res);
+        //         setCurrentSong({ title: res.title, audio: res.demo });
+        //         setShowGoBack(true);
+        //         setShowAuctionGallery(false);
+        //     });
+        fetch(`/auction/${aid}`, { method: 'GET' })
             .then(response => response.json()).then(res => {
                 setCurrentAuction(res);
                 setCurrentSong({ title: res.title, audio: res.demo });

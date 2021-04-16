@@ -30,7 +30,9 @@ export default function Account({ user, onLogin: setUser }) {
                     setShowLoader(false);
                 });
         } else {
-            sessionStorage.setItem('mubal', user.balance);
+            if (!sessionStorage.getItem('mubal'))
+                sessionStorage.setItem('mubal', user.balance);
+            setShowLoader(false);
         }
     }, []);
 
@@ -53,6 +55,7 @@ export default function Account({ user, onLogin: setUser }) {
     const handleLogout = () => {
         fetch('/logout', { method: 'POST' }).then(() => {
             setUser(null);
+            sessionStorage.removeItem('mubal');
         }).catch(err => {
             setMessage('Failed to log out. Please refresh the page and try again!');
         });
