@@ -7,12 +7,13 @@ The app only has a mobile front-end interface. When opening the app in your brow
 ## Build & Run
 *node version: v14.15.0*
 
-Run the following commands in the terminal to build the code and start a local server.
-```bash
-npm install
-npm run start
+Run the following commands in the terminal to build the app in Docker.
+```shell
+# make sure you are in the root directory of this project
+tar -czf master-server/static.tar.gz static/
+docker-compose up
 ```
-Wait until you see `Compiled successfully` before navigating to [localhost:3000](http://localhost:3000) in your browser.
+Wait until you see something like `db-server: MySQL ready for connection` before navigating to [localhost:3000](http://localhost:3000) in your browser. *This can take around 8 minutes so be patient!*
 
 ## Use the App as A Test User
 **Upload** and **Account** requires you to login before you can see the content. Use the following credentials to log into the test user account when prompted to access all the features of the app.
