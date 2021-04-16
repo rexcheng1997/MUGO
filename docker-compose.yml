@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  master-server:
+    build: ./master-server
+    ports:
+      - "3000:3000"
+    networks:
+      - default
+
+  blockchain-server:
+    build: ./blockchain-server
+    ports:
+      - "5000:5000"
+    networks:
+      - default
+
+  db-server:
+    build: ./db-server
+    ports:
+      - "5001:5001"
+    networks:
+      - default
+
+  mysql-db:
+    image: "mysql:latest"
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mugo-mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=mugo
+    networks:
+      - default
+
+volumes:
+  mugo-mysql:
+    driver: local
+
+networks:
+  default:
+    name: mugo
+    driver: bridge
