@@ -6,6 +6,7 @@ from .Bid import BidSchema
 class Auction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     assetId = db.Column(db.Integer)
+    contractId = db.Column(db.Integer)
     start = db.Column(db.DateTime, nullable=False)
     end = db.Column(db.DateTime, nullable=False)
     amount = db.Column(db.Integer, nullable=False)
@@ -19,13 +20,14 @@ class Auction(db.Model):
     bids = db.relationship('Bid', backref=db.backref('auction', lazy='select'), lazy='select')
 
     def __repr__(self):
-        return '<Auction {self.id} (asset_id={self.asset_id!r})>'.format(self=self)
+        return '<Auction {self.id} (asset_id={self.assetId!r}\tcontract_id={self.contractId!r})>'.format(self=self)
 
 class AuctionSchema(Schema):
     aid = fields.Int(attribute='id')
     uid = fields.Int(required=True)
     mid = fields.Int(required=True)
     assetId = fields.Int()
+    contractId = fields.Int()
     start = fields.DateTime(required=True)
     end = fields.DateTime(required=True)
     amount = fields.Int(required=True)

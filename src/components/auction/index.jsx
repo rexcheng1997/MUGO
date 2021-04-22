@@ -1,5 +1,5 @@
 import './layout.scss';
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Auction from 'ui/Auction';
 import Ad from 'ui/Ad';
@@ -9,16 +9,30 @@ import Input from 'ui/Input';
 import Button from 'ui/Button';
 import Timer from 'ui/Timer';
 import Toast from 'ui/Toast';
+import Loader from 'ui/Loader';
 import ArrowRightIcon from 'svg/arrow-right.svg';
 
 export default function AuctionPage(props) {
-    const { aid, start, end, minBid, participants } = props.data;
+    let { aid, start, end, minBid, participants } = props.data;
+    start += 'Z';
+    end += 'Z';
     const now = new Date();
     const [upcoming, setUpcoming] = useState(now < new Date(start));
     const [ongoing, setOngoing] = useState(now >= new Date(start) && now < new Date(end));
     const [finished, setFinished] = useState(now >= new Date(end));
     const [message, setMessage] = useState('');
+    const [showLoader, setShowLoader] = useState(false);
     const inputRef = useRef();
+
+    useEffect(() => {
+        finished && fetch('/complete-auction', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ aid })
+        });
+    }, [finished]);
 
     const handleBidRequest = () => {
         const value = parseFloat(inputRef.current.value);
@@ -27,7 +41,21 @@ export default function AuctionPage(props) {
             setMessage(`The artist has set a minimum bid at ${minBid} Algos. Please enter an amount greater than or equal to the minimum bid.`);
             return;
         }
-        console.log(value);
+        setShowLoader(true);
+        setMessage('Getting your bid into the pool...');
+        fetch('/submit-bid', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                aid: aid, bid: value
+            })
+        }).then(response => response.json()).then(res => {
+            setShowLoader(false);
+            setMessage(res.message);
+            res.status && setTimeout(() => window.location.reload(), 3e3);
+        });
     };
 
     return (
@@ -65,7 +93,10 @@ export default function AuctionPage(props) {
                 </div>
             </Box>}
             {message.length > 0 && <Toast onClose={() => setMessage('')}>
-                <p>{message}</p>
+                <div className='flex-col align-center'>
+                    {showLoader && <Loader size='sm' style={{ marginBottom: '0.5rem' }}/>}
+                    <p style={{ display: 'inline-block' }}>{message}</p>
+                </div>
             </Toast>}
         </div>
     );

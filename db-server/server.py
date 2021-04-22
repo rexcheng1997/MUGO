@@ -335,9 +335,9 @@ def retrieve_all_ownerships():
 
 @app.route('/auctions', methods=['GET'])
 def get_all_auctions_endpoint():
-    ts = datetime.now()
-    schema = AuctionSchema(exclude=('assetId', 'minBid', 'media', 'bids'))
-    upcoming = Auction.query.filter(Auction.end > ts).order_by(Auction.end).all()
+    ts = datetime.utcnow()
+    schema = AuctionSchema(exclude=('assetId', 'contractId', 'minBid', 'media', 'bids'))
+    upcoming = Auction.query.filter(Auction.end > ts).order_by(Auction.start).all()
     upcoming = schema.dump(upcoming, many=True)
     finished = Auction.query.filter(Auction.end <= ts).order_by(Auction.start).all()
     finished = schema.dump(finished, many=True)
@@ -362,7 +362,7 @@ def get_all_auctions_endpoint():
 def get_auction_endpoint(aid, uid):
     auction = Auction.query.get(aid)
     if auction is None:
-        return '', 400
+        return '', 404
 
     auction = AuctionSchema(only=('aid', 'uid', 'assetId', 'start', 'end', 'amount', 'minBid', 'sold', 'earnings', 'media.title', 'media.full_audio', 'media.demo_segment', 'media.cover')).dump(auction)
 
@@ -419,6 +419,8 @@ def update_auction_endpoint():
 
     if 'assetId' in data:
         auction.assetId = data['assetId']
+    if 'contractId' in data:
+        auction.contractId = data['contractId']
     if 'sold' in data:
         auction.sold = data['sold']
     if 'earnings' in data:
@@ -442,6 +444,34 @@ def create_bid_endpoint():
     db.session.commit()
     schema = BidSchema()
     return jsonify(schema.dump(bid)), 201
+
+
+@app.route('/delete-bid', methods=['DELETE'])
+def delete_bid_endpoint():
+    data = request.get_json()
+    if data is None:
+        return '', 400
+    message = BidSchema(only=('aid', 'uid')).validate(data)
+    if len(message) > 0:
+        return jsonify(message), 400
+
+    bid = Bid.query.filter_by(aid=data['aid'], uid=data['uid']).first()
+    if bid is None:
+        return '', 404
+
+    db.session.delete(bid)
+    db.session.commit()
+    return jsonify(BidSchema().dump(bid)), 200
+
+
+@app.route('/get-bids/<int:aid>', methods=['GET'])
+def get_bids_endpoint(aid):
+    auction = Auction.query.get(aid)
+    if auction is None:
+        return '', 404
+
+    schema = AuctionSchema(only=('uid', 'mid', 'assetId', 'contractId', 'start', 'end', 'amount', 'minBid', 'bids.uid', 'bids.bid'))
+    return jsonify(schema.dump(auction)), 200
 
 
 @app.route('/create-ownership', methods=['POST'])

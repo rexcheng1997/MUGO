@@ -28,7 +28,7 @@ export default function Song(props) {
                         {plays.formatNumPlays()} Plays
                     </small>
                     <small style={{ maxWidth: width / 2 }}>
-                        {parseInt(earnings)}+ Algos earned
+                        {parseInt(earnings * 1000) / 1000}+ Algos earned
                     </small>
                 </div>
             </div>

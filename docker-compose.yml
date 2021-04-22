@@ -12,6 +12,8 @@ services:
     build: ./blockchain-server
     ports:
       - "5000:5000"
+    environment:
+      - ESCROW_MNEMONIC=moral service assist divide episode knee orchard approve blue bicycle bind problem surface dream antenna town convince onion area better tornado swim wash able parade
     networks:
       - default
 

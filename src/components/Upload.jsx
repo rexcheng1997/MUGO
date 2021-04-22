@@ -126,8 +126,8 @@ export default function Upload() {
                 body: JSON.stringify({
                     mid: res.mid,
                     title: title,
-                    start: `${startDate} ${startTime}:00`,
-                    end: `${endDate} ${endTime}:00`,
+                    start: new Date(`${startDate} ${startTime}`).getTime() / 1000,
+                    end: new Date(`${endDate} ${endTime}`).getTime() / 1000,
                     amount: parseInt(amount),
                     minBid: parseFloat(bid)
                 })

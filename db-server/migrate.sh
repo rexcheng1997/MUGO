@@ -8,7 +8,7 @@ CREATE_OWNERSHIP_ENDPOINT=localhost:5001/create-ownership
 
 curl -X PUT localhost:5001/init
 
-curl -X POST -H "Content-Type: application/json" -d '{"name":"Scott Joplin", "email":"scott@passed.com", "password":"my_pass", "mnemonic":"apple banana orange juice ham harbor execute", "identity":0, "title":"An admirable artist"}' $CREATE_USER_ENDPOINT
+curl -X POST -H "Content-Type: application/json" -d '{"name":"Scott Joplin", "email":"scott@passed.com", "password":"my_pass", "mnemonic":"muffin put monster mandate execute enemy used truly defy poverty sorry target disease weather cook effort force awful shoulder until spring fiber medal abstract involve", "identity":0, "title":"An admirable artist"}' $CREATE_USER_ENDPOINT
 
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Ben Kessler", "email":"ben.k@studio.eu", "password":"secret-pass", "mnemonic":"ski clarify dawn leopard grab amazing output fashion coin delay zero virtual demand pattern glance grocery critic mandate fever country cushion used reject able bone", "identity":0, "title":"Amateur guitarist / songwriter"}' $CREATE_USER_ENDPOINT
 

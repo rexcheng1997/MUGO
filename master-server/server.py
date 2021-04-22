@@ -3,11 +3,15 @@ import os, re, requests, ffmpeg
 from datetime import datetime
 from flask import Flask, request, session, jsonify
 from werkzeug.utils import secure_filename
+import hashlib
 
 app = Flask(__name__, static_url_path='/', static_folder=FLASK_STATIC_FOLDER, root_path=os.path.dirname(os.path.abspath(__file__)))
 app.config['SECRET_KEY'] = FLASK_SECRET_KEY
 app.config['UPLOAD_FOLER'] = FLASK_UPLOAD_FOLDER
 
+def get_hash(password):
+    salted = password + password[0] 
+    return hashlib.sha256(bytes(salted, 'utf-8')).hexdigest()
 
 @app.route('/', methods=['GET'])
 def on_start():
@@ -20,12 +24,15 @@ def signup_endpoint():
     data = request.get_json()
     if data is None:
         return '', 400
+
     r = requests.put(f'http://{BLOCKCHAIN_SERVER}/create-wallet')
+    data['password'] = get_hash(data['password'])
     data['mnemonic'] = r.json()['mnemonic']
+
     r = requests.post(f'http://{DB_SERVER}/create-user', json=data)
     if r.status_code == 400:
         return jsonify(r.json()) if len(r.text) > 0 else '', 400
-
+    
     return jsonify(status=True), 200
 
 
@@ -35,6 +42,7 @@ def login_endpoint():
     if data is None:
         return '', 400
 
+    data['password'] = get_hash(data['password'])
     r = requests.post(f'http://{DB_SERVER}/get-user', json=data)
     if r.status_code == 400:
         return '', 400
@@ -139,8 +147,8 @@ def get_auctions_endpoint():
 @app.route('/auction/<int:aid>', methods=['GET'])
 def get_auction_endpoint(aid):
     r = requests.get(f'http://{DB_SERVER}/auction/{aid}/{session["uid"] if "uid" in session else 0}')
-    if r.status_code == 400:
-        return '', 400
+    if r.status_code == 404:
+        return '', 404
 
     return jsonify(r.json()), 200
 
@@ -255,12 +263,20 @@ def create_auction_endpoint():
     asset_name = secure_filename(data['title'])
     del data['title']
     data['uid'] = session['uid']
+    try:
+        startTimestamp = data['start']
+        endTimestamp = data['end']
+        data['start'] = datetime.fromtimestamp(data['start']).strftime('%Y-%m-%d %H:%M:%S')
+        data['end'] = datetime.fromtimestamp(data['end']).strftime('%Y-%m-%d %H:%M:%S')
+    except:
+        return jsonify(message='Start and end time needs to be Unix timestamp!'), 400
 
     r = requests.post(f'http://{DB_SERVER}/create-auction', json=data)
     if r.status_code == 400:
         return jsonify(r.json()), 400
     aid = r.json()['aid']
 
+    # get the artist's mnemonic
     r = requests.get(f'http://{DB_SERVER}/get-mnemonic?uid={session["uid"]}')
     if r.status_code == 400:
         return '', 400
@@ -278,10 +294,166 @@ def create_auction_endpoint():
     print(r.json())
     asset_id = r.json()['asset_id']
 
+    r = requests.put(f'http://{BLOCKCHAIN_SERVER}/create-smart-contract', json={
+        'passphrase': mnemonic, 'assetId': asset_id, 'amount': data['amount'],
+        'start': startTimestamp, 'end': endTimestamp, 'minBid': data['minBid']
+    })
+    if r.status_code != 201:
+        return jsonify(r.json()), r.status_code
+    print(r.json())
+    contract_id = r.json()['contract_id']
+
     r = requests.post(f'http://{DB_SERVER}/update-auction', json={
-        'aid': aid, 'assetId': asset_id
+        'aid': aid, 'assetId': asset_id, 'contractId': contract_id
     })
     if r.status_code != 200:
         return jsonify(r.json()) if len(r.text()) > 0 else '', r.status_code
 
     return jsonify(status=True, message='Your auction has been successfully created!', redirect='#/auction'), 201
+
+
+@app.route('/submit-bid', methods=['POST'])
+def submit_bid_endpoint():
+    if 'uid' not in session:
+        return jsonify(message='Please login to participate in the auction!'), 401
+    if 'vip' not in session:
+        return jsonify(message='You do not have any Algos in your account! Consider becoming a membership to enable the bidding feature.'), 401
+
+    data = request.get_json()
+    if data is None:
+        return '', 400
+    if 'aid' not in data:
+        return jsonify(message='Missing aid in the request'), 400
+    if 'bid' not in data:
+        return jsonify(message='Missing bid in the request'), 400
+
+    r = requests.get(f'http://{DB_SERVER}/get-bids/{data["aid"]}')
+    if r.status_code == 404:
+        return jsonify(message='Auction {} does not exist!'.format(data['aid'])), 404
+    auction = r.json()
+
+    if datetime.utcnow() < datetime.strptime(auction['start'], '%Y-%m-%dT%H:%M:%S'):
+        return jsonify(message='The auction has not started yet'), 403
+    if session['uid'] == auction['uid']:
+        return jsonify(message='You cannot participate in your own auction!'), 400
+    if data['bid'] < auction['minBid']:
+        return jsonify(message='You must enter a bid greater than or equal to the minimum bid set by the artist!'), 400
+
+    r = requests.get(f'http://{DB_SERVER}/get-mnemonic?uid={session["uid"]}')
+    if r.status_code != 200:
+        return jsonify(message='Server error'), r.status_code
+    mnemonic = r.json()['mnemonic']
+
+    r = requests.post(f'http://{BLOCKCHAIN_SERVER}/opt-in-contract', json={
+        'passphrase': mnemonic, 'contract_id': auction['contractId']
+    })
+    if r.status_code != 200:
+        if len(r.text()) > 0: print(r.json()['message'])
+        return jsonify(message='Failed to opt in the smart contract! Please check if you have enough Algos in your balance.'), r.status_code
+
+    r = requests.post(f'http://{BLOCKCHAIN_SERVER}/participate-in-auction', json={
+        'passphrase': mnemonic, 'bid': data['bid'], 'contract_id': auction['contractId'],
+        'note': '<User {}> bade {} Algos in <Auction {}>'.format(session['uid'], data['bid'], data['aid'])
+    })
+    if r.status_code == 406:
+        return jsonify(r.json()), 406
+    if r.status_code == 500:
+        print(r.json()['message'])
+        return jsonify(message='Request failed to satisfy the smart contract! Please check if your bid is higher than the current lowest bid.'), 400
+
+    auction['bids'].sort(key=lambda x: x['bid'], reverse=True)
+    if len(auction['bids']) >= auction['amount']: # kick someone out
+        p = auction['bids'].pop()
+
+        r = requests.get(f'http://{DB_SERVER}/get-mnemonic?uid={p["uid"]}')
+        if r.status_code != 200:
+            return jsonify(message='Server error'), r.status_code
+        mnemonic = r.json()['mnemonic']
+
+        r = requests.post(f'http://{BLOCKCHAIN_SERVER}/refund', json={
+            'passphrase': mnemonic, 'amount': p['bid'], 'contract_id': auction['contractId'],
+            'note': '<User {}> was kicked out of <Auction {}> with bid {} Algos'.format(p['uid'], data['aid'], p['bid'])
+        })
+        if r.status_code == 500:
+            print(r.json()['message'])
+            return jsonify(r.json()), 500
+
+        r = requests.delete(f'http://{DB_SERVER}/delete-bid', json={
+            'aid': data['aid'], 'uid': p['uid']
+        })
+
+    auction['bids'].append({ 'uid': session['uid'], 'bid': data['bid'] })
+    auction['bids'].sort(key=lambda x: x['bid'], reverse=True)
+    r = requests.post(f'http://{BLOCKCHAIN_SERVER}/update-lowest-bid', json={
+        'bid': auction['bids'][-1]['bid'], 'contract_id': auction['contractId']
+    })
+    if r.status_code != 200:
+        return jsonify(r.json()) if len(r.text()) > 0 else '', r.status_code
+
+    r = requests.post(f'http://{DB_SERVER}/create-bid', json={
+        'bid': data['bid'], 'uid': session['uid'], 'aid': data['aid']
+    })
+
+    return jsonify(status=True, message='Thank you for your participation! We wish you could get your position locked.'), 200
+
+
+@app.route('/complete-auction', methods=['POST'])
+def complete_auction_endpoint():
+    data = request.get_json()
+    if data is None:
+        return '', 400
+    if 'aid' not in data:
+        return jsonify(message='Missing aid in the request'), 400
+
+    r = requests.get(f'http://{DB_SERVER}/get-bids/{data["aid"]}')
+    if r.status_code == 404:
+        return jsonify(message='Auction {} does not exist!'.format(data['aid'])), 404
+    auction = r.json()
+
+    if datetime.utcnow() < datetime.strptime(auction['end'], '%Y-%m-%dT%H:%M:%S'):
+        return jsonify(message='The auction has not finished yet'), 403
+    if auction['contractId'] is None:
+        return jsonify(message='<Auction {}> has already wrapped up.'.format(data['aid'])), 200
+
+    r = requests.get(f'http://{DB_SERVER}/get-mnemonic?uid={auction["uid"]}')
+    if r.status_code != 200:
+        return jsonify(message='Server error'), r.status_code
+    artist = r.json()['mnemonic']
+
+    for participant in auction['bids']:
+        r = requests.get(f'http://{DB_SERVER}/get-mnemonic?uid={participant["uid"]}')
+        if r.status_code != 200:
+            return jsonify(message='Server error'), r.status_code
+        mnemonic = r.json()['mnemonic']
+
+        r = requests.post(f'http://{BLOCKCHAIN_SERVER}/win-auction', json={
+            'passphrase': mnemonic, 'owner': artist, 'bid': participant['bid'],
+            'asset_id': auction['assetId'], 'contract_id': auction['contractId'],
+            'note': 'Earned {} Algos from selling <Asset {}> to <User {}> in <Auction {}>'.format(participant['bid'] * 0.9, auction['assetId'], participant['uid'], data['aid'])
+        })
+        if r.status_code == 400:
+            return jsonify(r.json()) if len(r.text()) > 0 else '', 400
+        elif r.status_code == 500:
+            print(r.json()['message'])
+            return jsonify(message='Completion transaction failed for <User {}>'.format(participant['uid'])), 500
+
+        r = requests.post(f'http://{DB_SERVER}/create-ownership', json={
+            'uid': participant['uid'], 'aid': data['aid'], 'mid': auction['mid']
+        })
+
+    r = requests.delete(f'http://{BLOCKCHAIN_SERVER}/delete-contract', json={
+        'contract_id': auction['contractId']
+    })
+    if r.status_code == 400:
+        return jsonify(r.json()) if len(r.text()) > 0 else '', 400
+    elif r.status_code == 500:
+        print(r.json()['message'])
+        return jsonify(message='Server error'), 500
+
+    r = requests.post(f'http://{DB_SERVER}/update-auction', json={
+        'aid': data['aid'], 'contractId': None,
+        'sold': len(auction['bids']), 'earnings': sum(map(lambda p: p['bid'], auction['bids'])) * 0.9
+    })
+    print(r.json())
+
+    return '', 200

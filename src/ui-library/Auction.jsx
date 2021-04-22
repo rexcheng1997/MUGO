@@ -35,8 +35,8 @@ export default function Auction(props) {
                         {amount} NFTs
                     </small>
                     <small style={{ maxWidth: width / 3 * 2 }}>
-                        Starts at {new Date(start).formatDate()}<br/>
-                        Ends at {new Date(end).formatDate()}
+                        Starts at {new Date(start + 'Z').formatDate()}<br/>
+                        Ends at {new Date(end + 'Z').formatDate()}
                     </small>
                 </div>}
             </div>

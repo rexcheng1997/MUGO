@@ -31,6 +31,7 @@ h1, h2, h3, h4, h5, h6 {
 input {
     padding: 0.5rem 1rem;
     font-family: 'Roboto', sans-serif;
+    background-color: #fff;
     border: solid 1.5px var(--black);
     border-radius: 5px;
 }
