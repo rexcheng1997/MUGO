@@ -7,8 +7,9 @@ export default function Timer({ target, phrase, onTimeout }) {
 
     useEffect(() => {
         intervalEvent.current = setInterval(() => {
-            if (time - 1 === 0) onTimeout();
-            setTime(time - 1);
+            const t = target - new Date();
+            if (t <= 0) onTimeout();
+            setTime(t);
         }, 1e3);
         return () => clearInterval(intervalEvent.current);
     }, []);

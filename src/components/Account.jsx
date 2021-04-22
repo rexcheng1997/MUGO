@@ -116,7 +116,7 @@ export default function Account({ user, onLogin: setUser }) {
                         {user.hasOwnProperty('owns') && <section>
                             <h1>My NFTs</h1>
                             {user.owns.map(ownership => <Link to={`view/auction/${ownership.aid}`} key={ownership.aid}>
-                                <Auction data={ownership} inactive={true}/>
+                                <Auction data={ownership}/>
                             </Link>)}
                             {user.owns.length === 0 && <p>You do not own any NFTs.</p>}
                         </section>}

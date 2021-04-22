@@ -55,9 +55,6 @@ def create_user_endpoint():
     if len(message) > 0:
         return jsonify(message), 400
 
-    # note for later generate salt, hash password in master-server
-
-    # encrypt mnemonic by directly mutating the data object
     user = User(**data)
     db.session.add(user)
     db.session.commit()
@@ -105,9 +102,11 @@ def login_endpoint():
 
     else: # listener
         owns = Ownership.query.filter_by(uid=user['uid']).all()
-        owns = OwnershipSchema(only=('aid', 'auction.assetId', 'mid', 'media.uid', 'media.title', 'media.cover')).dump(owns, many=True)
+        owns = OwnershipSchema(only=('aid', 'auction.assetId', 'auction.sold', 'auction.earnings', 'mid', 'media.uid', 'media.title', 'media.cover')).dump(owns, many=True)
         for own in owns:
             own['assetId'] = own['auction']['assetId']
+            own['sold'] = own['auction']['sold']
+            own['earnings'] = own['auction']['earnings']
             own['title'] = own['media']['title']
             own['cover'] = own['media']['cover']
             own['artist'] = User.query.get(own['media']['uid']).name
@@ -154,9 +153,11 @@ def get_user_endpoint(uid):
 
     else: # listener
         owns = Ownership.query.filter_by(uid=user['uid']).all()
-        owns = OwnershipSchema(only=('aid', 'auction.assetId', 'mid', 'media.uid', 'media.title', 'media.cover')).dump(owns, many=True)
+        owns = OwnershipSchema(only=('aid', 'auction.assetId', 'auction.sold', 'auction.earnings', 'mid', 'media.uid', 'media.title', 'media.cover')).dump(owns, many=True)
         for own in owns:
             own['assetId'] = own['auction']['assetId']
+            own['sold'] = own['auction']['sold']
+            own['earnings'] = own['auction']['earnings']
             own['title'] = own['media']['title']
             own['cover'] = own['media']['cover']
             own['artist'] = User.query.get(own['media']['uid']).name

@@ -14,13 +14,27 @@ tar -czf master-server/static.tar.gz static/
 docker-compose up
 ```
 Wait until you see something like `db-server: MySQL ready for connection` before navigating to [localhost:3000](http://localhost:3000) in your browser. *This can take around 8 minutes so be patient!*
+```shell
+# OPTIONAL
+# run the following command to insert prepared data into the database to enable testing in the next section
+./db-server/migrate.sh
+```
 
 ## Use the App as A Test User
 **Upload** and **Account** requires you to login before you can see the content. Use the following credentials to log into the test user account when prompted to access all the features of the app.
+#### Artist
 ```
-email: user.test@berkeley.edu
+email: ben.k@studio.io
 password: build_web3
 ```
+#### Listener
+```
+email: jo.ram@berkeley.edu
+password: JOJO
+```
+
+## Use the App as A Regular User
+Sign up for an account and *remember to subscribe if you want to enjoy all the features of the app*.
 
 ## Screens
 The app has 3 main screens: **Discover**, **Upload**, and **Account**.

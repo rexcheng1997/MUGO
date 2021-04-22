@@ -19,5 +19,5 @@ class OwnershipSchema(Schema):
     uid = fields.Int(required=True)
     aid = fields.Int(required=True)
     mid = fields.Int(required=True)
-    auction = fields.Nested(AuctionSchema, only=('aid', 'uid', 'mid', 'assetId'))
+    auction = fields.Nested(AuctionSchema, only=('aid', 'uid', 'mid', 'assetId', 'sold', 'earnings'))
     media = fields.Nested(MediaSchema, exclude=('full_audio', 'demo_segment'))

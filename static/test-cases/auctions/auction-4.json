@@ -5,8 +5,8 @@
   "amount": 15,
   "sold": null,
   "earning": null,
-  "start": "2021-04-10 8:00 GMT-0700",
-  "end": "2021-04-18 16:00 GMT-0700",
+  "start": "2021-05-10 8:00 GMT-0700",
+  "end": "2021-05-18 16:00 GMT-0700",
   "cover": "test-cases/images/blind.png",
   "demo": "test-cases/audios/Blind.mp3",
   "participants": []

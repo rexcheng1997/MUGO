@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = FLASK_SECRET_KEY
 app.config['UPLOAD_FOLER'] = FLASK_UPLOAD_FOLDER
 
 def get_hash(password):
-    salted = password + password[0] 
+    salted = password + password[0]
     return hashlib.sha256(bytes(salted, 'utf-8')).hexdigest()
 
 @app.route('/', methods=['GET'])
@@ -24,15 +24,15 @@ def signup_endpoint():
     data = request.get_json()
     if data is None:
         return '', 400
-
     r = requests.put(f'http://{BLOCKCHAIN_SERVER}/create-wallet')
+    # check what kind of user
+    # salt/pw has
     data['password'] = get_hash(data['password'])
     data['mnemonic'] = r.json()['mnemonic']
-
     r = requests.post(f'http://{DB_SERVER}/create-user', json=data)
     if r.status_code == 400:
         return jsonify(r.json()) if len(r.text) > 0 else '', 400
-    
+
     return jsonify(status=True), 200
 
 
@@ -124,7 +124,7 @@ def get_releases_endpoint():
 
 @app.route('/song/<int:mid>', methods=['GET'])
 def get_song_endpoint(mid):
-    secret = '^mUg0_6o$' if session['vip'] else '5p0Of1N6'
+    secret = '^mUg0_6o$' if 'uid' in session and session['vip'] else '5p0Of1N6'
     r = requests.get(f'http://{DB_SERVER}/song/{mid}/{secret}')
     if r.status_code == 400:
         return '', 400

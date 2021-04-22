@@ -23,7 +23,7 @@ export default function Auction(props) {
                     <h2 title={title} style={{ maxWidth: width }}>{title}</h2>
                     {assetId ? <p title={assetId} style={{ maxWidth: width }}>NFT {assetId}</p> : <p title={artist} style={{ maxWidth: width }}>By {artist}</p>}
                 </div>
-                {props.inactive ? <div className='statistics flex-row align-center space-between'>
+                {(props.inactive || props.active === undefined) ? <div className='statistics flex-row align-center space-between'>
                     <small style={{ maxWidth: width / 3 * 2 }}>
                         {sold} NFTs sold for {parseInt(earnings)}+ Algos
                     </small>

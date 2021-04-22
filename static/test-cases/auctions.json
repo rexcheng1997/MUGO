@@ -7,8 +7,8 @@
       "amount": 10,
       "sold": null,
       "earning": null,
-      "start": "2021-03-18 9:00 GMT-0700",
-      "end": "2021-03-30 18:00 GMT-0700",
+      "start": "2021-04-18 9:00 GMT-0700",
+      "end": "2021-04-22 18:00 GMT-0700",
       "cover": "test-cases/images/oh-jesus-chris.png"
     }, {
       "aid": 3,
@@ -17,8 +17,8 @@
       "amount": 10,
       "sold": null,
       "earning": null,
-      "start": "2021-04-01 16:00 GMT-0700",
-      "end": "2021-04-02 2:00 GMT-0700",
+      "start": "2021-05-01 16:00 GMT-0700",
+      "end": "2021-05-02 2:00 GMT-0700",
       "cover": "test-cases/images/queen.png"
     }, {
       "aid": 4,
@@ -27,8 +27,8 @@
       "amount": 15,
       "sold": null,
       "earning": null,
-      "start": "2021-04-10 8:00 GMT-0700",
-      "end": "2021-04-18 16:00 GMT-0700",
+      "start": "2021-05-10 8:00 GMT-0700",
+      "end": "2021-05-18 16:00 GMT-0700",
       "cover": "test-cases/images/blind.png"
     }
   ],

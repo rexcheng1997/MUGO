@@ -5,8 +5,8 @@
   "amount": 10,
   "sold": null,
   "earning": null,
-  "start": "2021-03-18 9:00 GMT-0700",
-  "end": "2021-03-30 18:00 GMT-0700",
+  "start": "2021-04-18 9:00 GMT-0700",
+  "end": "2021-04-22 18:00 GMT-0700",
   "cover": "test-cases/images/oh-jesus-chris.png",
   "demo": "test-cases/audios/OH JESUS CHRIS (Remix).mp3",
   "participants": [
