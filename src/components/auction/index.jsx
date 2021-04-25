@@ -25,13 +25,13 @@ export default function AuctionPage(props) {
     const inputRef = useRef();
 
     useEffect(() => {
-        finished && fetch('/complete-auction', {
+        finished && setTimeout(() => fetch('/complete-auction', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ aid })
-        });
+        }), 5e2);
     }, [finished]);
 
     const handleBidRequest = () => {
