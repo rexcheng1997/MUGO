@@ -42,6 +42,12 @@ The app has 3 main screens: **Discover**, **Upload**, and **Account**.
 ### Discover
 **Discover** is where you explore releases of music and past, ongoing, and upcoming auctions. Clicking on any of the songs/auctions on your screen will lead you to the detail page of the song/auction, and at the same time, the audio player will automatically start playing the song for you.
 
+#### Release
+Under the category **Release**, you can see all the releases of music. Non-membership users can listen to the demo segment of a song while membership users can enjoy the entire song. Stream incomes are given to the artist based on number of plays at the rate of 0.001 Algo per play. Besides, membership users can also tip their favorite artists for any amount of Algos.
+
+#### Auction
+Under the category **Auction**, you can find all past, ongoing, and upcoming auctions. You need to become a membership user to participate in an auction. Submit the bid to enter the pool and remember to check the auction page after the auction ends to see if you have locked your position to win a music NFT.
+
 ### Upload
 **Upload** is where you upload your music to the platform. You can choose one of the two distribution types: _Release_ and _Auction (NFT)_.
 
