@@ -1,0 +1,38 @@
+.entry {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: 60px 100px 40px auto;
+    align-items: center;
+    justify-items: start;
+    justify-content: space-between;
+    &:last-child {
+        margin-bottom: 0;
+    }
+    &.ranked {
+        grid-template-columns: 40px 60px 100px auto;
+    }
+    .rank {
+        font-family: 'Noto San JP', sans-serif;
+        font-size: 1.67rem;
+        font-weight: 700;
+    }
+    img {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+    span {
+        font-size: 1rem;
+        &.contrast {
+            color: var(--contrast);
+        }
+        &:first-child {
+            justify-self: center;
+        }
+        &:last-child {
+            justify-self: end;
+        }
+    }
+}

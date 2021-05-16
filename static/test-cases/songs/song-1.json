@@ -1,0 +1,28 @@
+{
+  "mid": 1,
+  "title": "Maple Leaf Rag",
+  "artist": "Scott Joplin",
+  "plays": 3121,
+  "earnings": 110.1245,
+  "cover": "test-cases/images/maple-leaf-rag.jpg",
+  "audio": "test-cases/audios/Maple Leaf Rag.mp3",
+  "listeners": [
+    {
+      "name": "Luke Kowalski",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Jocelyn Webber",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Sehyun Chung",
+      "avatar": "images/default-avatar.png",
+      "date": "02/28"
+    }, {
+      "name": "Ayaon Yadav",
+      "avatar": "images/default-avatar.png",
+      "date": "03/01"
+    }
+  ]
+}

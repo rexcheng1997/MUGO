@@ -1,0 +1,31 @@
+$primary: #08d9d6;
+$contrast: #ff2e63;
+
+.btn.block {
+    width: 100%;
+    justify-content: space-around;
+}
+
+.btn.primary {
+    color: #fff;
+    background-color: $primary;
+    border-color: darken($primary, 5);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+.btn.contrast {
+    color: #fff;
+    background-color: $contrast;
+    border-color: darken($contrast, 5);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+.btn.success {
+    color: #2ab930;
+}
+.btn.danger {
+    color: #f5413d;
+}
+.btn.default {
+    color: var(--gray);
+    background-color: var(--black);
+    border-color: #fff;
+}

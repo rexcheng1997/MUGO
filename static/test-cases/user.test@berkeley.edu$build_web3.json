@@ -1,0 +1,29 @@
+{
+  "id": 1,
+  "uid": "5ef12a-88c45e7-9201bff3122d",
+  "name": "Ben Kessler",
+  "email": "user.test@berkeley.edu",
+  "title": "Amateur guitarist / songwriter",
+  "identity": 0,
+  "avatar": "images/default-avatar.png",
+  "mnemonic": "muffin put monster mandate execute enemy used truly defy poverty sorry target disease weather cook effort force awful shoulder until spring fiber medal abstract involve",
+  "createdAt": "2021-03-25T12:23:10.234Z",
+  "subscription": "2021-03-25T16:33:08.511Z",
+  "auctions": [
+    {
+      "aid": 2,
+      "title": "OH JESUS CHRIS (Remix)",
+      "artist": "Ben Kessler",
+      "assetId": 100254,
+      "amount": 10,
+      "sold": null,
+      "earning": null,
+      "start": "2021-03-18 9:00 GMT-0700",
+      "end": "2021-03-30 18:00 GMT-0700",
+      "cover": "test-cases/images/oh-jesus-chris.png"
+    }
+  ],
+  "releases": [
+
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "mid": 4,
+  "title": "The Wild Side Of Life",
+  "artist": "Hank Thompson",
+  "plays": 910,
+  "earnings": 45.9421,
+  "cover": "test-cases/images/the-wild-side-of-life.jpg",
+  "audio": "test-cases/audios/The Wild Side Of Life.mp3",
+  "listeners": [
+    {
+      "name": "Luke Kowalski",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Jocelyn Webber",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Sehyun Chung",
+      "avatar": "images/default-avatar.png",
+      "date": "02/28"
+    }, {
+      "name": "Ayaon Yadav",
+      "avatar": "images/default-avatar.png",
+      "date": "03/01"
+    }
+  ]
+}

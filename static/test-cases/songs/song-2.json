@@ -1,0 +1,28 @@
+{
+  "mid": 2,
+  "title": "Bad Guy",
+  "artist": "Billie Eilish",
+  "plays": 1023,
+  "earnings": 60.6516,
+  "cover": "test-cases/images/bad-guy.jpg",
+  "audio": "test-cases/audios/bad guy.mp3",
+  "listeners": [
+    {
+      "name": "Luke Kowalski",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Jocelyn Webber",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Sehyun Chung",
+      "avatar": "images/default-avatar.png",
+      "date": "02/28"
+    }, {
+      "name": "Ayaon Yadav",
+      "avatar": "images/default-avatar.png",
+      "date": "03/01"
+    }
+  ]
+}

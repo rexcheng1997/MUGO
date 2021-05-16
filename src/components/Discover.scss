@@ -1,0 +1,69 @@
+.category-menu {
+    position: sticky;
+    padding: 0.5rem var(--hp);
+    background-color: #fff;
+    z-index: 500;
+    transition: transform 0.4s ease;
+}
+
+.category-btn {
+    display: block;
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    color: var(--dark-gray);
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+    border: solid 2px var(--dark-gray);
+    border-radius: 2px;
+    transition: all 0.6s ease;
+    &.active {
+        color: var(--contrast);
+        border-color: var(--contrast);
+    }
+}
+
+.song-container, .auction-container {
+    transition: transform 0.4s ease;
+}
+.song-container-transition-enter,
+.auction-container-transition-enter,
+.category-menu-transition-enter {
+    transform: translateX(-100%);
+}
+.song-container-transition-enter-active,
+.auction-container-transition-enter-active,
+.category-menu-transition-enter-active {
+    transform: translateX(0);
+}
+.song-container-transition-exit,
+.auction-container-transition-exit,
+.category-menu-transition-exit {
+    transform: translateX(0);
+}
+.song-container-transition-exit-active,
+.auction-container-transition-exit-active,
+.category-menu-transition-exit-active {
+    transform: translateX(-100%);
+}
+
+.song-page-transition-enter, .auction-page-transition-enter {
+    transform: translateX(100%);
+}
+.song-page-transition-enter-active, .auction-page-transition-enter-active {
+    position: fixed;
+    transform: translateX(0);
+    .song-wrapper, .auction-wrapper {
+        position: unset !important;
+    }
+}
+.song-page-transition-exit, .auction-page-transition-exit {
+    transform: translateX(0);
+}
+.song-page-transition-exit-active, .auction-page-transition-exit-active {
+    position: fixed;
+    transform: translateX(100%);
+    .song-wrapper, .auction-wrapper {
+        position: unset !important;
+    }
+}

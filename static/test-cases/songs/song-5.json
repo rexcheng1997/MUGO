@@ -1,0 +1,28 @@
+{
+  "mid": 5,
+  "title": "Maybellene",
+  "artist": "Chuck Berry",
+  "plays": 823,
+  "earnings": 30.4211,
+  "cover": "test-cases/images/maybellene.jpg",
+  "audio": "test-cases/audios/Maybellene.mp3",
+  "listeners": [
+    {
+      "name": "Luke Kowalski",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Jocelyn Webber",
+      "avatar": "images/default-avatar.png",
+      "date": "02/26"
+    }, {
+      "name": "Sehyun Chung",
+      "avatar": "images/default-avatar.png",
+      "date": "02/28"
+    }, {
+      "name": "Ayaon Yadav",
+      "avatar": "images/default-avatar.png",
+      "date": "03/01"
+    }
+  ]
+}

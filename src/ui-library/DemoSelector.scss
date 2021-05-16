@@ -1,0 +1,56 @@
+.audio-demo-selector {
+    display: grid;
+    grid-template-columns: 30px 40px auto 40px;
+    column-gap: 15px;
+    align-items: center;
+    margin-top: 0.5rem;
+    .timestamp {
+        font-size: 1rem;
+        &.align-left {
+            justify-self: start;
+        }
+        &.align-right {
+            justify-self: end;
+        }
+    }
+    svg {
+        display: block;
+        cursor: pointer;
+    }
+}
+
+.audio-player-progress .selector-wrapper {
+    position: relative;
+    .selector-progress {
+        height: 8px;
+        position: absolute;
+        background-color: var(--primary);
+    }
+    .control.left {
+        left: -6px;
+    }
+    .control.right {
+        right: -6px;
+    }
+    .indicator-wrapper {
+        width: 10px;
+        height: 18px;
+        position: absolute;
+        transform: translateX(-5px);
+        span {
+            position: relative;
+            top: 100%;
+            left: -50%;
+            padding-top: 2px;
+        }
+    }
+    .indicator {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 8px;
+        background-color: var(--contrast);
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+        cursor: pointer;
+    }
+}

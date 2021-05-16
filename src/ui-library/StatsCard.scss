@@ -1,0 +1,43 @@
+.stats-card {
+    padding: 0.5rem 1.5rem 1rem;
+    margin-bottom: 0.8rem;
+    border: 1px solid var(--black);
+    border-radius: 15px;
+    &.primary span {
+        color: var(--primary);
+        &.unit {
+            color: var(--black);
+        }
+    }
+    &.contrast span {
+        color: var(--contrast);
+        &.unit {
+            color: var(--black);
+        }
+    }
+    h3 {
+        display: inline-block;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+    }
+    span {
+        margin-right: 0.5rem;
+        &:last-child {
+            margin-right: 0;
+        }
+        &.big {
+            font-size: 2rem;
+            font-weight: bold;
+            line-height: 22px;
+            letter-spacing: 1px;
+        }
+        &.up-arrow {
+            margin-right: 2px;
+            margin-bottom: 1px;
+        }
+        &.unit {
+            font-size: 0.9rem;
+        }
+    }
+}
