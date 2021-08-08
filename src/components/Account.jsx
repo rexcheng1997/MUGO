@@ -28,8 +28,7 @@ export default function Account({ user, onLogin: setUser }) {
                 const account = algosdk.mnemonicToSecretKey(user.mnemonic);
                 algodClient.accountInformation(account.addr).do().then(info => {
                     sessionStorage.setItem('mubal', info.amount / 1e6);
-                    user.balance = info.amount / 1e6;
-                    setUser(user);
+                    setUser({ ...user, balance: info.amount / 1e6 });
                     setShowLoader(false);
                 }).catch(err => {
                     setShowLoader(false);
